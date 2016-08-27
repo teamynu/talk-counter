@@ -13,3 +13,9 @@
 @import url("monaca-onsenui/css/onsen-css-components-blue-basic-theme.css");
 /*** <End:monaca-onsenui LoadCss:"components/monaca-onsenui/css/onsen-css-components-blue-basic-theme.css"> ***/
 /*** <End:monaca-onsenui> ***/
+
+/*** <Start:angular> ***/
+/*** <Start:angular LoadCss:"components/angular/angular-csp.css"> ***/
+@import url("angular/angular-csp.css");
+/*** <End:angular LoadCss:"components/angular/angular-csp.css"> ***/
+/*** <End:angular> ***/
