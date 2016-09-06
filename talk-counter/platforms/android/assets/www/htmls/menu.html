@@ -1,0 +1,28 @@
+﻿<ons-page style="background-color: white">
+
+    <ons-list>
+
+        <ons-list-item modifier="tappable" class="list__item__line-height"
+                       onclick="app.navigator.resetToPage('index.html')">
+            <i class="fa fa-home fa-lg" style="color: #666"></i>
+            &nbsp; Top
+        </ons-list-item>
+
+        <ons-list-item modifier="tappable" class="list__item__line-height"
+                       onclick="app.slidingMenu.setMainPage('htmls/registerHuman.html', {closeMenu: true})">
+            &nbsp; 人登録
+        </ons-list-item>
+
+        <ons-list-item modifier="tappable" class="list__item__line-height"
+                       onclick="app.slidingMenu.setMainPage('htmls/registerWord.html', { closeMenu: true })">
+            &nbsp; 口ぐせ登録
+        </ons-list-item>
+
+        <ons-list-item modifier="tappable" class="list__item__line-height"
+                       onclick="app.slidingMenu.setMainPage('htmls/showRecord.html', { closeMenu: true })">
+            &nbsp; 記録確認
+        </ons-list-item>
+
+    </ons-list>
+
+</ons-page>
