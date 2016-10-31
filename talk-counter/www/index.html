@@ -1,5 +1,5 @@
 ﻿<!DOCTYPE HTML>
-<html>
+<html ng-app="myApp">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
@@ -10,11 +10,14 @@
     <link rel="stylesheet" href="css/style.css">
     
     <script>
-        ons.bootstrap();
+        // AngularJSを使用できるようにons.bootstrap()を定義
+        var app = ons.bootstrap('myApp', ['onsen']);
     </script>
 
     <!-- 無限プチプチ用のJavascript追加 -->
     <script src="js/infinityBubble.js"></script>
+    <!-- 口癖カウンター用のJavascript追加 -->
+    <script src="js/talkCounter.js"></script>
 
 </head>
 <body>
