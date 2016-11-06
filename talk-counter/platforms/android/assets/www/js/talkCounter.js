@@ -7,8 +7,9 @@
         { name: "ccc" }
     ];
     //talkCounter.htmlの<ons-page ng-controller="TalkCounterController">のスコープの動作を記載
-    app.controller('TalkCounterController', function ($scope) {
-        $scope.name = datalist[0].name;
+    //$scopeではなくController asの形式を採用
+    app.controller('TalkCounterController', function () {
+        this.name = datalist[0].name;
     });
 }());
 

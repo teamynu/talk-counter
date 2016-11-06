@@ -1,4 +1,5 @@
-﻿<ons-page ng-controller="TalkCounterController">
+﻿<!-- Controller as の記法を採用 -->
+<ons-page ng-controller="TalkCounterController as tc_ctrl">
     <ons-toolbar>
         <div class="center">口ぐせカウンター</div>
         <div class="right">
@@ -8,6 +9,6 @@
 
     <div style="text-align: center">
         <h1>口ぐせカウンター</h1>
-        <p>{{name}}</p>
+        <p>{{tc_ctrl.name}}</p> <!-- 変数名.プロパティ名を指定 -->
     </div>
 </ons-page>
