@@ -1,4 +1,4 @@
-﻿<ons-page>
+﻿<ons-page ng-controller="RegisterHumanController as rh_ctrl">
     <ons-toolbar>
         <div class="center">人登録</div>
         <div class="right">
@@ -8,5 +8,12 @@
 
     <div style="text-align: center">
         <h1>人登録</h1>
+        <form ng-submit="rh_ctrl.submit()">
+            <div class="form-group">
+                <label for="registname">名前</label>
+                <input type="text" class="form-control" id="registname" placeholder="登録したい名前を入力" ng-model="rh_ctrl.registname">
+            </div>
+            <button type="submit" class="btn btn-primary">登録</button>
+        </form>
     </div>
 </ons-page>
