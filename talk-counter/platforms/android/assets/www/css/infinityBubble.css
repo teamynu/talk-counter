@@ -2,7 +2,7 @@
 }
 
 /* 画面中央：プチプチボタン配置領域 */
-#bubbleBtnArea{
+#ib-bubbleBtnArea{
     text-align: center;
     width: 100%;
     height: 60%; 
@@ -12,24 +12,32 @@
 }
 
 /* ボタンデザイン */
-.bubbleBtn{
+.ib-bubbleBtn{
     border-radius: 50px; 
     width: 50px; 
     height: 50px; 
     margin: 2px;
-    border: 2px #444444 solid;
+    box-shadow:rgba(0,0,0,0.3) 2px 2px;
+    border: 6px #444444 double;
 }
 
+/* 仕切り線背景 */
+#ib-divLineBack{
+    width: 100%;
+    height: 15%;
+    background-color: rgba(0, 255, 144, 0.4);
+}
 /* 仕切り線 */
-#divLine{
+#ib-divLine{
     width: 90%;
-    height: 5%;
+    height: 100%;
     margin-left: 5%;
-    background-color: rgba(0,0,0,0.1);
+    border-bottom: 2px #444444 solid;
+    /*background-color: rgba(0, 255, 144, 0.4);*/
 }
 
 /* プチプチカウンター表示領域 */
-#bubbleCounterArea{
+#ib-bubbleCounterArea{
     text-align: center; 
     width:100%; 
     height: 20%; 
@@ -37,13 +45,13 @@
     background-color: rgba(0, 255, 144, 0.6);
 }
 
-#bubbleCounterPanel{
+#ib-bubbleCounterPanel{
     width: 100%;
     height: 45%;
-    background-color: rgba(0,0,0,0.2);
+    background-color: rgba(0,0,0,0);
 }
 
-.counterPart{
+.ib-counterPart{
     display: inline-block;
     width: 9%;
     height: 80%;
@@ -52,10 +60,10 @@
     border-radius: 2px;
     background-color: rgba(0,0,0,0.2);    
 }
-.counterPart p{
+.ib-counterPart p{
     margin-top: 40%;
 }
-.counterPartComma{
+.ib-counterPartComma{
     display: inline-block;
     width: 9%;
     height: 80%;

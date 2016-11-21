@@ -25,22 +25,12 @@ IB.addCounter = function () {
     var toStringCounter = tempCounter + "";　　// 文字列に変換
     for (var i = 0; i < toStringCounter.length; i++) {
         var number = toStringCounter.substr(-(i+1), 1);
-        var counterPart = document.getElementById('counterPartP' + (i + 1));
+        var counterPart = document.getElementById('ib-counterPartP' + (i + 1));
         counterPart.innerHTML = number;
     }
 
     // 一応DOMに表示する（あとで消す or 透明にする）
-    var counter = document.getElementById('counterDisplay');
+    var counter = document.getElementById('ib-counterDisplay');
     counter.innerHTML = tempCounter + " プチ";
 
 };
-
-
-//function FlikerController($scope) {
-//    alert('Click FlikerController!!!');
-//}
-
-//function AddCounter($counter) {
-//    // 足していく
-//    $counter += 1;
-//}
