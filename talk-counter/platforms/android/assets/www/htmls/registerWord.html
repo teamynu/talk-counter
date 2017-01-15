@@ -1,4 +1,4 @@
-﻿<ons-page>
+﻿<ons-page ng-controller="RegisterWordController as rw_ctrl">
     <ons-toolbar>
         <div class="center">口ぐせ登録</div>
         <div class="right">
@@ -8,5 +8,12 @@
 
     <div style="text-align: center">
         <h1>口ぐせ登録</h1>
+        <form ng-submit="rw_ctrl.submit()">
+            <div class="form-group">
+                <label for="registword">口ぐせ</label>
+                <input type="text" class="form-control" placeholder="登録したい口ぐせを入力" ng-model="rw_ctrl.registword">
+            </div>
+            <button type="submit" class="btn btn-primary">登録</button>
+        </form>
     </div>
 </ons-page>

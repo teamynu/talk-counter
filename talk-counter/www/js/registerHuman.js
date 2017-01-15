@@ -6,7 +6,10 @@
         this.registname = '';
         // 登録を押されたときの関数
         this.submit = function () {
-            console.log('registered!')
+            var allhuman = JSON.parse(localStorage.getItem('humans'));
+            var array = [allhuman];
+            array.unshift(this.registname);
+            localStorage.setItem('humans', angular.toJson(array));
         };
     });
 }());
