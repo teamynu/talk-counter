@@ -8,12 +8,15 @@
 
     <div style="text-align: center">
         <h1>口ぐせ登録</h1>
-        <form ng-submit="rw_ctrl.submit()">
-            <div class="form-group">
-                <label for="registword">口ぐせ</label>
-                <input type="text" class="form-control" placeholder="登録したい口ぐせを入力" ng-model="rw_ctrl.registword">
-            </div>
-            <button type="submit" class="btn btn-primary">登録</button>
-        </form>
+        <select ng-model="rw_ctrl.selectedPerson" ng-change="rw_ctrl.reload(rw_ctrl.selectPerson)">
+            <option value="">--人を選択してください--</option>
+            <option ng-repeat="person in rw_ctrl.person" value="{{person}}">{{person}}</option>
+        </select>
+        <p><input class="text-input" type="text" placeholder="登録したい口ぐせを入力" ng-model="rw_ctrl.word" float ></input></p>
+        <p><ons-button ng-click="rw_ctrl.submit()">登録</ons-button></p>
+        <ons-list>
+            <ons-list-item ng-repeat="word in rw_ctrl.allwords">{{word}}</ons-list-item>
+        </ons-list>
     </div>
+
 </ons-page>
