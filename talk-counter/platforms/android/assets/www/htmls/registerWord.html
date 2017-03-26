@@ -8,15 +8,19 @@
 
     <div style="text-align: center">
         <h1>口ぐせ登録</h1>
-        <select ng-model="rw_ctrl.selectedPerson" ng-change="rw_ctrl.reload(rw_ctrl.selectPerson)">
-            <option value="">--人を選択してください--</option>
-            <option ng-repeat="person in rw_ctrl.person" value="{{person}}">{{person}}</option>
-        </select>
+        <ons-button ng-click="dialog.show()">人を選択</ons-button>
+        <ons-dialog var="dialog" cancelable>
+            <ons-list ng-controller="SelectPersonDialogContralloer as spd_ctrl">
+                <ons-list-item ng-repeat="(person, data) in rw_ctrl.datahash" modifier="tappable">
+                    <div ng-click="spd_ctrl.select(person);dialog.hide()">{{ person }}</div>
+                </ons-list-item>
+            </ons-list>
+        </ons-dialog>
         <p><input class="text-input" type="text" placeholder="登録したい口ぐせを入力" ng-model="rw_ctrl.word" float ></input></p>
         <p><ons-button ng-click="rw_ctrl.submit()">登録</ons-button></p>
+        <p>すでに登録されている口ぐせ</p>
         <ons-list>
-            <ons-list-item ng-repeat="word in rw_ctrl.allwords">{{word}}</ons-list-item>
+            <ons-list-item ng-repeat="(word, data) in rw_ctrl.wordlist">{{word}}</ons-list-item>
         </ons-list>
     </div>
-
 </ons-page>

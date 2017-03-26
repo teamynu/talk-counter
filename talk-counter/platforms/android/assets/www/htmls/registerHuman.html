@@ -12,7 +12,7 @@
         <p><ons-button ng-click="rh_ctrl.submit()">登録</ons-button></p>
         <p><span>すでに登録されている名前</span>
         <ons-list>
-            <ons-list-item ng-repeat="person in rh_ctrl.person">{{person}}</ons-list-item>
+            <ons-list-item ng-repeat="(person, data) in rh_ctrl.datahash">{{person}}</ons-list-item>
         </ons-list></p>
     </div>
 </ons-page>
