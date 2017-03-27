@@ -9,6 +9,18 @@
 
     <div style="text-align: center">
         <h1>口ぐせカウンター</h1>
-        <p>{{tc_ctrl.name}}</p> <!-- 変数名.プロパティ名を指定 -->
+        <ons-button ng-click="dialog1.show()">人を選択</ons-button>
+        <ons-dialog var="dialog1" cancelable>
+            <ons-list ng-controller="SelectPersonDialogContralloer as spd_ctrl">
+                <ons-list-item ng-repeat="(person, data) in tc_ctrl.datahash" modifier="tappable">
+                    <div ng-click="spd_ctrl.select(person);dialog1.hide()">{{ person }}</div>
+                </ons-list-item>
+            </ons-list>
+        </ons-dialog>
+        <ons-list>
+            <ons-list-item ng-repeat="(word, data) in tc_ctrl.wordlist" modifier="tappable">
+                <div ng-click="tc_ctrl.addcount(word)">{{word}}:{{data.count}}回</div>
+            </ons-list-item>
+        </ons-list> 
     </div>
 </ons-page>
