@@ -19,17 +19,23 @@
     <script src="js/infinityBubble.js"></script>
     <!-- 口癖カウンター用のJavascript追加 -->
     <script src="js/talkCounter.js"></script>
-    <script src="js/registerHuman.js"></script>
-    <script src="js/registerWord.js"></script>
-    <script src="js/showRecord.js"></script>
 
 </head>
 <body>
+    <!-- htmlsフォルダからtalkCounterとinfinityBubbleのhtmlファイルを読み込み -->
+    <!-- これ以降は上記htmlファイルに書いたons-template要素を利用できるようになる -->
+    <ng-include src="'htmls/talkCounter.html'"></ng-include>
+    <ng-include src="'htmls/infinityBubble.html'"></ng-include>
+
     <ons-navigator var="app.navigator" page="main.html"></ons-navigator>
     <ons-template id="main.html">
         <ons-page>
-            <ons-sliding-menu var="app.slidingMenu" swipeable="false" menu-page="htmls/menu.html" main-page="htmls/top.html" side="right" type="overlay" max-slide-distance="200px">
-            </ons-sliding-menu>
+            <ons-toolbar fixed-style>
+                <div class="center">Mainページ</div>
+            </ons-toolbar>
+            <ons-button modifier="large--cta" onclick="app.navigator.pushPage('talkCounterBody.html', {animation:'slide'})">口ぐせカウンター</ons-button>
+            <br />
+            <ons-button modifier="large--cta" onclick="app.navigator.pushPage('infinityBubbleBody.html', {animation:'slide'})">無限プチプチ</ons-button>
         </ons-page>
     </ons-template>
 </body>

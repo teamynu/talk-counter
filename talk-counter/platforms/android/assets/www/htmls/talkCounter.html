@@ -1,26 +1,142 @@
-﻿<!-- Controller as の記法を採用 -->
-<ons-page ng-controller="TalkCounterController as tc_ctrl">
-    <ons-toolbar>
-        <div class="center">口ぐせカウンター</div>
-        <div class="right">
-            <ons-toolbar-button ng-click="app.slidingMenu.toggleMenu()"><ons-icon icon="bars"></ons-icon></ons-toolbar-button>
-        </div>
-    </ons-toolbar>
+﻿<!-- 口ぐせカウンターのフレーム -->
+<ons-template id="talkCounterBody.html">
+    <ons-page>
+        <ons-sliding-menu var="tc.slidingMenu" swipeable="false" menu-page="tcmenu.html" main-page="tccontent.html" side="right" type="overlay" max-slide-distance="200px">
+        </ons-sliding-menu>
+    </ons-page>
+</ons-template>
 
-    <div style="text-align: center">
-        <h1>口ぐせカウンター</h1>
-        <ons-button ng-click="dialog1.show()">人を選択</ons-button>
-        <ons-dialog var="dialog1" cancelable>
-            <ons-list ng-controller="SelectPersonDialogContralloer as spd_ctrl">
-                <ons-list-item ng-repeat="(person, data) in tc_ctrl.datahash" modifier="tappable">
-                    <div ng-click="spd_ctrl.select(person);dialog1.hide()">{{ person }}</div>
+<!-- 口ぐせカウンターのメニュー画面 -->
+<ons-template id="tcmenu.html">
+    <ons-page style="background-color: white">
+        <ons-list>
+            <ons-list-item modifier="tappable" class="list__item__line-height"
+                            onclick="tc.slidingMenu.setMainPage('tccontent.html', { closeMenu: true })">
+                <i class="fa fa-home fa-lg" style="color: #666"></i>
+                &nbsp; 口ぐせカウンター
+            </ons-list-item>
+            <ons-list-item modifier="tappable" class="list__item__line-height"
+                            onclick="tc.slidingMenu.setMainPage('registerPerson.html', {closeMenu: true})">
+                &nbsp; 人登録
+            </ons-list-item>
+            <ons-list-item modifier="tappable" class="list__item__line-height"
+                            onclick="tc.slidingMenu.setMainPage('registerWord.html', { closeMenu: true })">
+                &nbsp; 口ぐせ登録
+            </ons-list-item>
+            <ons-list-item modifier="tappable" class="list__item__line-height"
+                            onclick="tc.slidingMenu.setMainPage('showRecord.html', { closeMenu: true })">
+                &nbsp; 記録確認
+            </ons-list-item>
+        </ons-list>
+    </ons-page>
+</ons-template>
+
+<!-- 口ぐせカウンター画面 -->
+<ons-template id="tccontent.html">
+    <!-- Controller as の記法を採用 -->
+    <ons-page ng-controller="TalkCounterController as tc_ctrl">
+        <ons-toolbar>
+            <div class="left">
+                <ons-back-button>Back</ons-back-button>
+            </div>
+            <div class="center">口ぐせカウンター</div>
+            <div class="right">
+                <ons-toolbar-button ng-click="tc.slidingMenu.toggleMenu()"><ons-icon icon="bars"></ons-icon></ons-toolbar-button>
+            </div>
+        </ons-toolbar>
+
+        <div style="text-align: center">
+            <h1>口ぐせカウンター</h1>
+            <div ng-controller="DialogController as dc">
+                <ons-button  ng-click="dc.show('selectPersonDialog')">人を選択</ons-button>
+            </div>
+            <ons-list>
+                <ons-list-item ng-repeat="(word, data) in tc_ctrl.wordlist" modifier="tappable">
+                    <div ng-click="tc_ctrl.addcount(word)">{{word}}:{{data.count}}回</div>
                 </ons-list-item>
             </ons-list>
-        </ons-dialog>
-        <ons-list>
-            <ons-list-item ng-repeat="(word, data) in tc_ctrl.wordlist" modifier="tappable">
-                <div ng-click="tc_ctrl.addcount(word)">{{word}}:{{data.count}}回</div>
+        </div>
+    </ons-page>
+</ons-template>
+
+<!-- 人選択ダイアログ -->
+<ons-template id="selectPersonDialog">
+    <ons-dialog ng-controller="DialogController as dc" cancelable>
+        <ons-list ng-controller="SelectPersonDialogController as spd_ctrl">
+            <ons-list-item ng-repeat="(person, data) in spd_ctrl.datahash" modifier="tappable">
+                <div ng-click="spd_ctrl.select(person);dc.hide('selectPersonDialog')">{{ person }}</div>
             </ons-list-item>
-        </ons-list> 
-    </div>
-</ons-page>
+        </ons-list>
+    </ons-dialog>
+</ons-template>
+
+<!-- 人登録画面 -->
+<ons-template id="registerPerson.html">
+    <ons-page ng-controller="RegisterPersonController as rp_ctrl">
+        <ons-toolbar>
+            <div class="center">人登録</div>
+            <div class="right">
+                <ons-toolbar-button ng-click="tc.slidingMenu.toggleMenu()"><ons-icon icon="bars"></ons-icon></ons-toolbar-button>
+            </div>
+        </ons-toolbar>
+
+        <div style="text-align: center">
+            <h1>人登録</h1>
+            <p><input class="text-input" type="text" placeholder="登録したい人名を入力" ng-model="rp_ctrl.registname" float></input></p>
+            <p><ons-button ng-click="rp_ctrl.submit()">登録</ons-button></p>
+            <p>
+                <span>すでに登録されている名前</span>
+                <ons-list>
+                    <ons-list-item ng-repeat="(person, data) in rp_ctrl.datahash">{{person}}</ons-list-item>
+                </ons-list>
+            </p>
+        </div>
+    </ons-page>
+</ons-template>
+
+<!-- 口ぐせ登録画面 -->
+<ons-template id="registerWord.html">
+    <ons-page ng-controller="RegisterWordController as rw_ctrl">
+        <ons-toolbar>
+            <div class="center">口ぐせ登録</div>
+            <div class="right">
+                <ons-toolbar-button ng-click="tc.slidingMenu.toggleMenu()"><ons-icon icon="bars"></ons-icon></ons-toolbar-button>
+            </div>
+        </ons-toolbar>
+
+        <div style="text-align: center">
+            <h1>口ぐせ登録</h1>
+            <div ng-controller="DialogController as dc">
+                <ons-button ng-click="dc.show('selectPersonDialog')">人を選択</ons-button>
+            </div>
+            <p><input class="text-input" type="text" placeholder="登録したい口ぐせを入力" ng-model="rw_ctrl.word" float></input></p>
+            <p><ons-button ng-click="rw_ctrl.submit()">登録</ons-button></p>
+            <p>すでに登録されている口ぐせ</p>
+            <ons-list>
+                <ons-list-item ng-repeat="(word, data) in rw_ctrl.wordlist">{{word}}</ons-list-item>
+            </ons-list>
+        </div>
+    </ons-page>
+</ons-template>
+
+<!-- 記録確認画面 -->
+<ons-template id="showRecord.html">
+    <ons-page ng-controller="ShowRecordController as sr_ctrl">
+        <ons-toolbar>
+            <div class="center">記録確認</div>
+            <div class="right">
+                <ons-toolbar-button ng-click="tc.slidingMenu.toggleMenu()"><ons-icon icon="bars"></ons-icon></ons-toolbar-button>
+            </div>
+        </ons-toolbar>
+
+        <div style="text-align: center">
+            <h1>記録確認</h1>
+            <div ng-controller="DialogController as dc">
+                <ons-button ng-click="dc.show('selectPersonDialog')">人を選択</ons-button>
+            </div>
+            <ons-list>
+                <ons-list-item ng-repeat="(word, data) in sr_ctrl.wordlist">{{word}}:{{data.count}}回</ons-list-item>
+            </ons-list>
+        </div>
+    </ons-page>
+</ons-template>
