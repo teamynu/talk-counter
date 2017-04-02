@@ -34,7 +34,7 @@
 <!-- 口ぐせカウンター画面 -->
 <ons-template id="tccontent.html">
     <!-- Controller as の記法を採用 -->
-    <ons-page ng-controller="TalkCounterController as tc_ctrl">
+    <ons-page>
         <ons-toolbar>
             <div class="left">
                 <ons-back-button>Back</ons-back-button>
@@ -50,8 +50,8 @@
             <div ng-controller="DialogController as dc">
                 <ons-button  ng-click="dc.show('selectPersonDialog')">人を選択</ons-button>
             </div>
-            <ons-list>
-                <ons-list-item ng-repeat="(word, data) in tc_ctrl.wordlist" modifier="tappable">
+            <ons-list ng-controller="TalkCounterController as tc_ctrl">
+                <ons-list-item ng-repeat="(word, data) in tc_ctrl.wordList" modifier="tappable">
                     <div ng-click="tc_ctrl.addcount(word)">{{word}}:{{data.count}}回</div>
                 </ons-list-item>
             </ons-list>
@@ -63,7 +63,7 @@
 <ons-template id="selectPersonDialog">
     <ons-dialog ng-controller="DialogController as dc" cancelable>
         <ons-list ng-controller="SelectPersonDialogController as spd_ctrl">
-            <ons-list-item ng-repeat="(person, data) in spd_ctrl.datahash" modifier="tappable">
+            <ons-list-item ng-repeat="(person, data) in spd_ctrl.personList" modifier="tappable">
                 <div ng-click="spd_ctrl.select(person);dc.hide('selectPersonDialog')">{{ person }}</div>
             </ons-list-item>
         </ons-list>
@@ -72,7 +72,7 @@
 
 <!-- 人登録画面 -->
 <ons-template id="registerPerson.html">
-    <ons-page ng-controller="RegisterPersonController as rp_ctrl">
+    <ons-page>
         <ons-toolbar>
             <div class="center">人登録</div>
             <div class="right">
@@ -80,14 +80,14 @@
             </div>
         </ons-toolbar>
 
-        <div style="text-align: center">
+        <div style="text-align: center"  ng-controller="RegisterPersonController as rp_ctrl">
             <h1>人登録</h1>
             <p><input class="text-input" type="text" placeholder="登録したい人名を入力" ng-model="rp_ctrl.registname" float></input></p>
             <p><ons-button ng-click="rp_ctrl.submit()">登録</ons-button></p>
             <p>
                 <span>すでに登録されている名前</span>
                 <ons-list>
-                    <ons-list-item ng-repeat="(person, data) in rp_ctrl.datahash">{{person}}</ons-list-item>
+                    <ons-list-item ng-repeat="(person, data) in rp_ctrl.personList">{{person}}</ons-list-item>
                 </ons-list>
             </p>
         </div>
@@ -96,7 +96,7 @@
 
 <!-- 口ぐせ登録画面 -->
 <ons-template id="registerWord.html">
-    <ons-page ng-controller="RegisterWordController as rw_ctrl">
+    <ons-page>
         <ons-toolbar>
             <div class="center">口ぐせ登録</div>
             <div class="right">
@@ -104,7 +104,7 @@
             </div>
         </ons-toolbar>
 
-        <div style="text-align: center">
+        <div style="text-align: center" ng-controller="RegisterWordController as rw_ctrl">
             <h1>口ぐせ登録</h1>
             <div ng-controller="DialogController as dc">
                 <ons-button ng-click="dc.show('selectPersonDialog')">人を選択</ons-button>
@@ -113,7 +113,7 @@
             <p><ons-button ng-click="rw_ctrl.submit()">登録</ons-button></p>
             <p>すでに登録されている口ぐせ</p>
             <ons-list>
-                <ons-list-item ng-repeat="(word, data) in rw_ctrl.wordlist">{{word}}</ons-list-item>
+                <ons-list-item ng-repeat="(word, data) in rw_ctrl.wordList">{{word}}</ons-list-item>
             </ons-list>
         </div>
     </ons-page>
@@ -121,7 +121,7 @@
 
 <!-- 記録確認画面 -->
 <ons-template id="showRecord.html">
-    <ons-page ng-controller="ShowRecordController as sr_ctrl">
+    <ons-page>
         <ons-toolbar>
             <div class="center">記録確認</div>
             <div class="right">
@@ -134,8 +134,8 @@
             <div ng-controller="DialogController as dc">
                 <ons-button ng-click="dc.show('selectPersonDialog')">人を選択</ons-button>
             </div>
-            <ons-list>
-                <ons-list-item ng-repeat="(word, data) in sr_ctrl.wordlist">{{word}}:{{data.count}}回</ons-list-item>
+            <ons-list ng-controller="ShowRecordController as sr_ctrl">
+                <ons-list-item ng-repeat="(word, data) in sr_ctrl.wordList">{{word}}:{{data.count}}回</ons-list-item>
             </ons-list>
         </div>
     </ons-page>

@@ -1,6 +1,6 @@
 ﻿// talkCounter.jsで有効なスコープを即時関数で定義
 (function () {
-    // データシェアサービス
+    // ダイアログサービス
     app.factory('dialogService', function () {
         var dialogs = {};
         return {
@@ -20,6 +20,71 @@
         }
     });
 
+    // データサービス
+    app.factory('talkCounterData', function () {
+        var _data = angular.fromJson(localStorage.getItem('talkconterdata') || "{}");
+        var _selectedPerson = '';
+        // hashと追加要素の重複チェック
+        function _duplicated(hash, item) {
+            for (var key in hash) {
+                if (key == item) {return true;}
+            }
+            return false;
+        }
+        return {
+            addPerson: function (person) {
+                if (_data) {
+                    if (_duplicated(_data, person)) {
+                        ons.notification.alert({
+                            message: 'すでに登録されています'
+                        });
+                    } else {
+                        _data[person] = {};
+                        localStorage.setItem('talkconterdata', angular.toJson(_data));
+                    }
+                } else {
+                    console.log('invalid value : '+_data);
+                }
+            },
+            addWord: function (word) {
+                if (_data[_selectedPerson]) {
+                    if (_duplicated(_data[_selectedPerson], word)) {
+                        ons.notification.alert({
+                            message: 'すでに登録されています'
+                        });
+                    } else {
+                        _data[_selectedPerson][word] = { count: 0 };
+                        localStorage.setItem('talkconterdata', angular.toJson(_data));
+                    }
+                } else {
+                    console.log('invalid value : _data[' + _selectedPerson + ']');
+                }
+            },
+            addCount: function (word) {
+                if (_data[_selectedPerson][word]) {
+                    _data[_selectedPerson][word].count += 1;
+                    localStorage.setItem('talkconterdata', angular.toJson(_data));
+                } else {
+                    console.log('invalid value : _data[' + _selectedPerson + '][' + word + ']');
+                }
+            },
+            getPersonList:function(){
+                return _data;
+            },
+            getWordList: function () {
+                if (_selectedPerson) {
+                    return _data[_selectedPerson];
+                } else {
+                    console.log('null : _selectedPerson');
+                    return {};
+                }
+            },
+            setSelectedPerson: function (person) {
+                _selectedPerson = person;
+            }
+        }
+    });
+
     //　ダイアログコントローラー
     app.controller('DialogController', function (dialogService) {
         this.show = function (dlg) {
@@ -31,10 +96,11 @@
     });
 
     // ダイアログで人を選択するコントローラ
-    app.controller('SelectPersonDialogController', function ($rootScope, dialogService) {
-        this.datahash = JSON.parse(localStorage.getItem('wordconterdata') || "{}");
+    app.controller('SelectPersonDialogController', function ($rootScope, talkCounterData) {
+        this.personList = talkCounterData.getPersonList();
         // 人名がselectされた時の動作
         this.select = function (person) {
+            talkCounterData.setSelectedPerson(person);
             // すべてのscopeに選んだ人を送信
             $rootScope.$broadcast('selectedPerson', person);
         };
@@ -42,108 +108,57 @@
 
     //talkCounter.htmlの<ons-page ng-controller="TalkCounterController">のスコープの動作を記載
     //$scopeではなくController asの形式を採用
-    app.controller('TalkCounterController', function ($scope) {
-        this.datahash = JSON.parse(localStorage.getItem('wordconterdata') || "{}");
-        this.selectedPerson = '';
-        this.wordlist = {};
+    app.controller('TalkCounterController', function ($scope, talkCounterData) {
+        this.wordList = talkCounterData.getWordList();
         var $this = this;
         // 人が選択された時の動作
         $scope.$on('selectedPerson', function (event, arg) {
-            var person = arg;
-            console.log("person: " + person);
-            $this.selectedPerson = person;
-            $this.wordlist = $this.datahash[person].wordlist;
+            $this.wordList = talkCounterData.getWordList();
         });
         // 口ぐせがタップされた時の動作
         this.addcount = function (word) {
-            var incount = this.datahash[this.selectedPerson].wordlist[word].count;
-            this.datahash[this.selectedPerson].wordlist[word].count = incount + 1;
-            localStorage.setItem('wordconterdata', angular.toJson(this.datahash));
+            talkCounterData.addCount(word);
         }
     });
 
     // registerHuman
     //$scopeではなくController asの形式を採用
-    app.controller('RegisterPersonController', function () {
+    app.controller('RegisterPersonController', function (talkCounterData) {
         // 入力された情報を保持
         this.registname = '';
-        this.datahash = JSON.parse(localStorage.getItem('wordconterdata') || "{}");
+        this.personList = talkCounterData.getPersonList();
         // 登録を押されたときの関数
         this.submit = function () {
-            if (duplicated(this.datahash, this.registname)) {
-                ons.notification.alert({
-                    message: 'すでに登録されています'
-                });
-            } else {
-                this.datahash[this.registname] = {
-                    wordlist: {
-                    }
-                };
-                localStorage.setItem('wordconterdata', angular.toJson(this.datahash));
-            };
+            talkCounterData.addPerson(this.registname);
         };
-        // hashと追加要素の重複チェック
-        function duplicated(hash, item) {
-            for (var key in hash) {
-                if (key == item) {
-                    return true;
-                }
-            }
-            return false;
-        }
     });
 
     // registerWord
     // 登録画面で口ぐせ登録するコントローラ
-    app.controller('RegisterWordController', function ($scope) {
+    app.controller('RegisterWordController', function ($scope, talkCounterData) {
         // 入力された情報を保持
         this.word = '';
-        this.datahash = JSON.parse(localStorage.getItem('wordconterdata') || "{}");
-        this.selectedPerson = '';
-        this.wordlist = {};
+        this.wordList = talkCounterData.getWordList();
         var $this = this;
         // 人が選択された時の動作
         $scope.$on('selectedPerson', function (event, arg) {
-            var person = arg;
-            console.log("person: " + person);
-            $this.selectedPerson = person;
-            $this.wordlist = $this.datahash[person].wordlist;
+            $this.wordList = talkCounterData.getWordList();
         });
         // 登録を押されたときの動作
         this.submit = function () {
-            if (duplicated(this.wordlist, this.word)) {
-                ons.notification.alert({
-                    message: 'すでに登録されています'
-                });
-            } else {
-                this.datahash[this.selectedPerson].wordlist[this.word] = { count: 0 };
-                localStorage.setItem('wordconterdata', angular.toJson(this.datahash));
-            };
-        };
-        // hashと追加要素の重複チェック
-        function duplicated(hash, item) {
-            for (var key in hash) {
-                if (key == item) {
-                    return true;
-                };
-            };
-            return false;
+            talkCounterData.addWord(this.word);
+            this.wordList = talkCounterData.getWordList();
         };
     });
 
     // showRecord
     //$scopeではなくController asの形式を採用
-    app.controller('ShowRecordController', function ($scope) {
-        this.datahash = JSON.parse(localStorage.getItem('wordconterdata') || "{}");
-        this.selectedPerson = '';
-        this.wordlist = {};
+    app.controller('ShowRecordController', function ($scope, talkCounterData) {
+        this.wordList = talkCounterData.getWordList();
         var $this = this;
         // 人が選択された時の動作
         $scope.$on('selectedPerson', function (event, arg) {
-            var person = arg;
-            console.log("person: " + person);
-            $this.selectedPerson = person;
-            $this.wordlist = $this.datahash[person].wordlist;
+            $this.wordList = talkCounterData.getWordList();
         });
     });
 }());
